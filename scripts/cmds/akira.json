@@ -1,0 +1,37 @@
+const fs = require('fs');
+
+module.exports = {
+  config: {
+    name: "akira",
+    version: "1.0",
+    author: "Jay",
+    countDown: 5,
+    role: 0,
+    shortDescription: "This command allows users view akira.",
+    longDescription: "This command enables users to view akira",
+    category: "Games",
+    guide: {
+      en: "To view akira, use the command '{pn} akira image.' "
+    }
+  },
+
+  onStart: async function ({ api, args, message }) {
+    
+    const [arg1] = args;
+
+    if (!arg1) {
+      message.reply("akira");
+      return;
+    }
+
+     if (arg1.toLowerCase() === 'image') {
+      const dareChallenges = JSON.parse(fs.readFileSync(`${__dirname}/assist_json/akira.json`));
+      const randomIndex = Math.floor(Math.random() * dareChallenges.length);
+      const randomChallenge = dareChallenges[randomIndex];
+
+      message.reply(`Here's your akira senpai: ${randomChallenge}`);
+    } else {
+      message.reply("Invalid input. Please use '/akira image'");
+    }
+  }
+};
